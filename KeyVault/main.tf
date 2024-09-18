@@ -68,3 +68,10 @@ resource "azurerm_key_vault_secret" "oblig1-key-vault-vm-secret" {
   name         = random_string.oblig1-key-vault-vm-secret-name.result
   value        = random_password.oblig1-key-vault-vm-password.result
 }
+
+# Create a Key Vault Secret Resource for Storage Account Access Key
+resource "azurerm_key_vault_secret" "oblig1-key-vault-sa-accesskey" {
+  name = var.sa_accesskey_name
+  value = var.sa_accesskey_value
+  key_vault_id = azurerm_key_vault.oblig1-key-vault.id
+}

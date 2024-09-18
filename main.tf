@@ -91,6 +91,7 @@ module "VirtualMachine" {
 
   admin_user = module.KeyVault.kv_vm_username
   admin_pass = module.KeyVault.kv_vm_pass
+
   # Tags
   common_tags = local.common_tags
 }
@@ -125,4 +126,7 @@ module "KeyVault" {
   environment  = module.ResourceGroup.environment
   rg_name      = module.ResourceGroup.rg_name
   common_tags  = local.common_tags
+
+  sa_accesskey_name  = module.StorageAccount.sa_accesskey_name
+  sa_accesskey_value = module.StorageAccount.sa_accesskey_value
 }

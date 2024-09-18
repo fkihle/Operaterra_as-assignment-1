@@ -2,6 +2,8 @@
 ##### STORAGE ACCOUNT ################################
 ################
 
+# TODO: create random string to append to sa name
+
 # Create Storage Account
 
 resource "azurerm_storage_account" "oblig1-storage-accounts" {
