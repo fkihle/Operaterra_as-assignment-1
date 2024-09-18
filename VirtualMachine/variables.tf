@@ -52,3 +52,13 @@ variable "nic_ids" {
   type        = list(string)
   description = "Network Interface IDs (inherited from Network Module)"
 }
+
+variable "admin_user" {
+  type        = string
+  description = "Randomly generated username (inherited from Key Vault)"
+}
+
+variable "admin_pass" {
+  type        = string
+  description = "Randomly generated password (inherited from Key Vault)"
+}

@@ -88,6 +88,9 @@ module "VirtualMachine" {
   rg_name       = module.ResourceGroup.rg_name
   subnet_ranges = module.Network.subnet_ranges
   nic_ids       = module.Network.nic_ids
+
+  admin_user = module.KeyVault.kv_vm_username
+  admin_pass = module.KeyVault.kv_vm_pass
   # Tags
   common_tags = local.common_tags
 }

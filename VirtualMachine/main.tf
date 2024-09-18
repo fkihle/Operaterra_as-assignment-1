@@ -9,21 +9,16 @@ resource "azurerm_linux_virtual_machine" "oblig1-vms" {
   name                = "vm-${var.project_name}-${var.location}-${var.environment}-${count.index}"
   resource_group_name = var.rg_name
   location            = var.location
-  size                = "Standard_F2" # Todo: Make this dynamic / user friendly
-  admin_username      = "admin"       # Todo: Get this from secrets
-
+  size                = "Standard_F2"  # Todo: Make this dynamic / user friendly
+  admin_username      = var.admin_user # Get username from secrets
+  admin_password      = var.admin_pass # Get password from secrets
   network_interface_ids = [
     var.nic_ids[count.index],
   ]
 
-  admin_ssh_key {
-    username   = "admin"                  # Todo: Get this from secrets
-    public_key = file("~/.ssh/id_rsa.pub") # Todo: Get this from secrets
-  }
-
   os_disk {
     caching              = "ReadWrite"    # Todo: Make this dynamic / user friendly
-    storage_account_type = "Standard_LRD" # Todo: Make this dynamic / user friendly
+    storage_account_type = "Standard_LRS" # Todo: Make this dynamic / user friendly
   }
 
   source_image_reference { # Todo: Make this dynamic / user friendly
@@ -86,8 +81,4 @@ module "network-security-group" {
   ]
 
   tags = var.common_tags
-}
-
-output "vm_names" {
-  value = var.vm_names
 }
