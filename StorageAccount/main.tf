@@ -6,10 +6,10 @@
 
 # Create Storage Account
 
-resource "azurerm_storage_account" "oblig1-storage-accounts" {
+resource "azurerm_storage_account" "storage-accounts" {
   count = length(var.vm_names)
 
-  name                     = "sa-${var.project_name}-${var.location}-${var.environment}-${count.index}"
+  name                     = "sa-${var.project_name}-${count.index}"
   resource_group_name      = var.rg_name
   location                 = var.location
   account_tier             = "Standard" # Todo: Make this dynamic / user friendly

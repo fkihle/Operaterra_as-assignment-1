@@ -3,10 +3,10 @@
 ################
 
 # Create VMs
-resource "azurerm_linux_virtual_machine" "oblig1-vms" {
+resource "azurerm_linux_virtual_machine" "vms" {
   count = length(var.vm_names)
 
-  name                = "vm-${var.project_name}-${var.location}-${var.environment}-${count.index}"
+  name                = "vm-${var.project_name}-${count.index}"
   resource_group_name = var.rg_name
   location            = var.location
   size                = "Standard_F2"  # Todo: Make this dynamic / user friendly
@@ -37,13 +37,13 @@ module "network-security-group" {
   source                = "Azure/network-security-group/azurerm"
   resource_group_name   = var.rg_name
   location              = var.location
-  security_group_name   = "nsg-${var.project_name}-${var.location}-${var.environment}"
+  security_group_name   = "nsg-${var.project_name}"
   source_address_prefix = var.subnet_ranges
   use_for_each          = true
 
   custom_rules = [
     {
-      name                       = "sec-rule-HTTP-${var.project_name}-${var.location}-${var.environment}"
+      name                       = "sec-rule-HTTP-${var.project_name}"
       priority                   = 100
       direction                  = "Inbound"
       access                     = "Allow"
@@ -55,7 +55,7 @@ module "network-security-group" {
       description                = "network-security-rule-http"
     },
     {
-      name                       = "sec-rule-http-mapping-${var.project_name}-${var.location}-${var.environment}"
+      name                       = "sec-rule-http-mapping-${var.project_name}"
       priority                   = 101
       direction                  = "Inbound"
       access                     = "Allow"
@@ -67,7 +67,7 @@ module "network-security-group" {
       description                = "network-security-rule-http-mapping"
     },
     {
-      name                       = "sec-rule-SSH-${var.project_name}-${var.location}-${var.environment}"
+      name                       = "sec-rule-SSH-${var.project_name}"
       priority                   = 102
       direction                  = "Inbound"
       access                     = "Allow"

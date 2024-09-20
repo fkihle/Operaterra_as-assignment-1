@@ -1,5 +1,5 @@
 # Create a VNET
-resource "azurerm_virtual_network" "oblig1-vnet" {
+resource "azurerm_virtual_network" "vnet" {
   name                = "vnet-${var.project_name}-${var.location}-${var.environment}"
   resource_group_name = var.rg_name
   location            = var.location
@@ -9,26 +9,26 @@ resource "azurerm_virtual_network" "oblig1-vnet" {
 }
 
 # Create subnets
-resource "azurerm_subnet" "oblig1-subnets" {
+resource "azurerm_subnet" "subnets" {
   count = length(var.subnet_ranges)
 
-  name                 = "snet-${var.project_name}-${var.location}-${var.environment}-${count.index}"
-  virtual_network_name = azurerm_virtual_network.oblig1-vnet.name
+  name                 = "snet-${var.project_name}-${count.index}"
+  virtual_network_name = azurerm_virtual_network.vnet.name
   resource_group_name  = var.rg_name
   address_prefixes     = [var.subnet_ranges[count.index]]
 }
 
 # Create a network interface for use with VMs
-resource "azurerm_network_interface" "oblig1-network-interface" {
+resource "azurerm_network_interface" "nics" {
   count = length(var.vm_names)
 
-  name                = "nic-${var.project_name}-${var.location}-${var.environment}-${count.index}"
+  name                = "nic-${var.project_name}-${count.index}"
   location            = var.location
   resource_group_name = var.rg_name
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     = azurerm_subnet.oblig1-subnets[count.index % length(var.subnet_ranges)].id
+    subnet_id                     = azurerm_subnet.subnets[count.index % length(var.subnet_ranges)].id
     private_ip_address_allocation = "Dynamic"
   }
 

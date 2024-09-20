@@ -1,6 +1,6 @@
 # Handle output from ResourceGroup module
 output "rg_name" {
-  value = azurerm_resource_group.oblig1.name
+  value = azurerm_resource_group.rg.name
 }
 
 output "project_name" {

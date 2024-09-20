@@ -1,6 +1,6 @@
 # Handle output from Network module
 output "nic_ids" {
-  value = azurerm_network_interface.oblig1-network-interface[*].id
+  value = azurerm_network_interface.nics[*].id
 }
 
 output "subnet_ranges" {
@@ -8,5 +8,5 @@ output "subnet_ranges" {
 }
 
 output "subnet_ids" {
-  value = azurerm_subnet.oblig1-subnets[*].id
+  value = azurerm_subnet.subnets[*].id
 }

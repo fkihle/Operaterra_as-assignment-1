@@ -5,13 +5,13 @@
 data "azurerm_client_config" "current" {}
 
 # Create random id
-resource "random_id" "oblig1-random-id" {
+resource "random_id" "random-id" {
   byte_length = 4
 }
 
 # Create a Key Vault
-resource "azurerm_key_vault" "oblig1-key-vault" {
-  name                        = "kv-${var.project_name}-${var.location}-${var.environment}-${random_id.oblig1-random-id.hex}"
+resource "azurerm_key_vault" "key-vault" {
+  name                        = "kv-${var.project_name}-${random_id.random-id.hex}"
   location                    = var.location
   resource_group_name         = var.rg_name
   enabled_for_disk_encryption = true
@@ -47,7 +47,7 @@ resource "azurerm_key_vault" "oblig1-key-vault" {
 }
 
 # Create a random Key Vault VM Secret Name
-resource "random_string" "oblig1-key-vault-vm-secret-name" {
+resource "random_string" "kv-vm-secret-name" {
   length  = 13
   lower   = true
   numeric = false
@@ -56,22 +56,22 @@ resource "random_string" "oblig1-key-vault-vm-secret-name" {
 }
 
 # Create rendom password
-resource "random_password" "oblig1-key-vault-vm-password" {
+resource "random_password" "kv-vm-password" {
   length           = 24
   special          = true
   override_special = "!#$%&,."
 }
 
 # Create a Key Vault Secret Resource
-resource "azurerm_key_vault_secret" "oblig1-key-vault-vm-secret" {
-  key_vault_id = azurerm_key_vault.oblig1-key-vault.id
-  name         = random_string.oblig1-key-vault-vm-secret-name.result
-  value        = random_password.oblig1-key-vault-vm-password.result
+resource "azurerm_key_vault_secret" "kv-vm-secret" {
+  key_vault_id = azurerm_key_vault.key-vault.id
+  name         = random_string.kv-vm-secret-name.result
+  value        = random_password.kv-vm-password.result
 }
 
 # Create a Key Vault Secret Resource for Storage Account Access Key
-resource "azurerm_key_vault_secret" "oblig1-key-vault-sa-accesskey" {
+resource "azurerm_key_vault_secret" "kv-sa-accesskey" {
   name = var.sa_accesskey_name
   value = var.sa_accesskey_value
-  key_vault_id = azurerm_key_vault.oblig1-key-vault.id
+  key_vault_id = azurerm_key_vault.key-vault.id
 }
