@@ -45,7 +45,7 @@ provider "azurerm" {
 # Create a resource group from module
 module "ResourceGroup" {
   source       = "./ResourceGroup"
-  project_name = "opera-terra-oblig-1"
+  project_name = "kihle"
   location     = "westeurope"
   environment  = "test"
   costcenter   = "utvikling-001"

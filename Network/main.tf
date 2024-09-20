@@ -1,6 +1,6 @@
 # Create a VNET
 resource "azurerm_virtual_network" "vnet" {
-  name                = "vnet-${var.project_name}-${var.location}-${var.environment}"
+  name                = "vnet-${var.project_name}"
   resource_group_name = var.rg_name
   location            = var.location
   address_space       = [var.vnet_range]
