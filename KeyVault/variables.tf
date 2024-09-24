@@ -29,11 +29,11 @@ variable "common_tags" {
 }
 
 variable "sa_accesskey_name" {
-  type = string
+  type        = string
   description = "Storage Account Access Key name (inherited from StorageAccount module)"
 }
 
 variable "sa_accesskey_value" {
-  type       = string
+  type        = string
   description = "Storage Account Access Key value  (inherited from StorageAccount module)"
 }

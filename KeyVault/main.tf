@@ -46,12 +46,19 @@ resource "azurerm_key_vault" "key-vault" {
   tags = var.common_tags
 }
 
+# Create a Key Vault Secret Resource for Storage Account Access Key
+resource "azurerm_key_vault_secret" "kv-sa-accesskey" {
+  name         = var.sa_accesskey_name
+  value        = var.sa_accesskey_value
+  key_vault_id = azurerm_key_vault.key-vault.id
+}
+
 # Create a random Key Vault VM Secret Name
-resource "random_string" "kv-vm-secret-name" {
+resource "random_string" "kv-vm-username" {
   length  = 13
+  special = false
   lower   = true
   numeric = false
-  special = false
   upper   = false
 }
 
@@ -62,16 +69,14 @@ resource "random_password" "kv-vm-password" {
   override_special = "!#$%&,."
 }
 
-# Create a Key Vault Secret Resource
-resource "azurerm_key_vault_secret" "kv-vm-secret" {
+resource "azurerm_key_vault_secret" "kv-vm-username" {
+  name = "vm-username"
+  value = random_string.kv-vm-username.result
   key_vault_id = azurerm_key_vault.key-vault.id
-  name         = random_string.kv-vm-secret-name.result
-  value        = random_password.kv-vm-password.result
 }
 
-# Create a Key Vault Secret Resource for Storage Account Access Key
-resource "azurerm_key_vault_secret" "kv-sa-accesskey" {
-  name = var.sa_accesskey_name
-  value = var.sa_accesskey_value
+resource "azurerm_key_vault_secret" "kv-vm-password" {
+  name = "vm-password"
+  value = random_password.kv-vm-password.result
   key_vault_id = azurerm_key_vault.key-vault.id
 }

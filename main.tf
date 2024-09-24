@@ -1,17 +1,4 @@
 
-
-########################################################################
-
-# TODO
-# - Azure Key Vault with the following secrets:
-# - A secret holding the VM username and password
-# - A secret holding the Storage Account Access Key
-# - The VM should use the Key Vault VM secret with username and password 
-
-########################################################################
-
-
-
 ################
 ##### PROVIDERS and DEPENDENCIES ################################
 ################
@@ -32,7 +19,7 @@ provider "azurerm" {
 
   features {
     key_vault {
-      purge_soft_delete_on_destroy    = true
+      purge_soft_delete_on_destroy    = false
       recover_soft_deleted_key_vaults = true
     }
   }
@@ -42,16 +29,12 @@ provider "azurerm" {
 ##### MAIN RESOURCE GROUP ################################
 ################
 
-# Create a resource group from module
-module "ResourceGroup" {
-  source       = "./ResourceGroup"
-  project_name = "kihle"
-  location     = "westeurope"
-  environment  = "test"
-  costcenter   = "utvikling-001"
+# Create a resource group
+resource "azurerm_resource_group" "rg" {
+  name     = "rg-${var.project_name}"
+  location = var.location
 
-  # Tags
-  common_tags = local.common_tags
+  tags = local.common_tags
 }
 
 ################
@@ -61,18 +44,17 @@ module "ResourceGroup" {
 # Create network from module
 module "Network" {
   source        = "./Network"
-  vnet_range    = "10.13.37.0/24"
-  subnet_ranges = ["10.13.37.0/26", "10.13.37.64/26", "10.13.37.128/26", "10.13.37.192/26"]
+
+  vnet_range    = var.vnet_range
+  subnet_ranges = var.subnet_ranges
+
+  rg_name      = azurerm_resource_group.rg.name
+  location     = var.location
+  project_name = var.project_name
+  common_tags = local.common_tags
 
   vm_names     = module.VirtualMachine.vm_names
-  location     = module.ResourceGroup.location
-  project_name = module.ResourceGroup.project_name
-  rg_name      = module.ResourceGroup.rg_name
-
-  # Tags
-  common_tags = local.common_tags
 }
-
 
 ################
 ##### VIRTUAL MACHINE ################################
@@ -81,21 +63,21 @@ module "Network" {
 # Create VMs from module
 module "VirtualMachine" {
   source   = "./VirtualMachine"
-  vm_names = ["server-01", "server-02", "server-03"]
 
-  location      = module.ResourceGroup.location
-  project_name  = module.ResourceGroup.project_name
-  rg_name       = module.ResourceGroup.rg_name
+  vm_names      = var.vm_names
+  
+  rg_name       = azurerm_resource_group.rg.name
+  location      = var.location
+  project_name  = var.project_name
+  common_tags   = local.common_tags
+
   subnet_ranges = module.Network.subnet_ranges
   nic_ids       = module.Network.nic_ids
 
   admin_user = module.KeyVault.kv_vm_username
   admin_pass = module.KeyVault.kv_vm_pass
-
-  # Tags
-  common_tags = local.common_tags
+  depends_on = [ module.KeyVault ]
 }
-
 
 ################
 ##### STORAGE ACCOUNT ################################
@@ -105,12 +87,13 @@ module "VirtualMachine" {
 module "StorageAccount" {
   source = "./StorageAccount"
 
-  vm_names     = module.VirtualMachine.vm_names
-  location     = module.ResourceGroup.location
-  project_name = module.ResourceGroup.project_name
-  rg_name      = module.ResourceGroup.rg_name
-  subnet_ids   = module.Network.subnet_ids
+  rg_name      = azurerm_resource_group.rg.name
+  location     = var.location
+  project_name = var.project_name
   common_tags  = local.common_tags
+
+  vm_names     = module.VirtualMachine.vm_names
+  subnet_ids   = module.Network.subnet_ids
 }
 
 ################
@@ -121,10 +104,10 @@ module "StorageAccount" {
 module "KeyVault" {
   source = "./KeyVault"
 
-  location     = module.ResourceGroup.location
-  project_name = module.ResourceGroup.project_name
-  environment  = module.ResourceGroup.environment
-  rg_name      = module.ResourceGroup.rg_name
+  rg_name      = azurerm_resource_group.rg.name
+  location     = var.location
+  project_name = var.project_name
+  environment  = var.environment
   common_tags  = local.common_tags
 
   sa_accesskey_name  = module.StorageAccount.sa_accesskey_name

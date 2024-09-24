@@ -1,12 +1,12 @@
-# Handle output from KeyVault module
+# # Handle output from KeyVault module
 output "kv_vm_username" {
-  value       = azurerm_key_vault_secret.kv-vm-secret.name
+  value       = random_string.kv-vm-username.result
   description = "Username for the VM"
-  sensitive   = true
+  sensitive   = false
 }
 
 output "kv_vm_pass" {
-  value       = azurerm_key_vault_secret.kv-vm-secret.value
+  value       = random_password.kv-vm-password.result
   description = "Password for the VM"
   sensitive   = true
 }
