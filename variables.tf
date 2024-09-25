@@ -31,9 +31,9 @@ variable "environment" {
 
 # RESOURCE GROUP variables
 variable "location" {
-  type = string
+  type        = string
   description = "Area for hosting the project resources"
-  default = "westeurope"
+  default     = "westeurope"
 }
 
 # NETWORK variables

@@ -9,13 +9,11 @@ resource "azurerm_linux_virtual_machine" "vms" {
   name                            = "vm-${var.project_name}-${count.index}"
   resource_group_name             = var.rg_name
   location                        = var.location
-  size                            = "Standard_F2"  # Todo: Make this dynamic
+  size                            = "Standard_F2" # Todo: Make this dynamic
   admin_username                  = var.admin_user
   admin_password                  = var.admin_pass
   disable_password_authentication = false
-  network_interface_ids = [
-    var.nic_ids[count.index],
-  ]
+  network_interface_ids           = [var.nic_ids[count.index]]
 
   os_disk {
     caching              = "ReadWrite"

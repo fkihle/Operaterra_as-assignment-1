@@ -12,13 +12,16 @@ resource "azurerm_storage_account" "storage-accounts" {
   account_tier             = "Standard"
   account_replication_type = "LRS"
 
-  network_rules {
-    default_action             = "Deny"
-    bypass                     = ["AzureServices"]
-    virtual_network_subnet_ids = var.subnet_ids
-  }
-
   tags = var.common_tags
 }
 
 # Create Storage Container
+resource "azurerm_storage_container" "storage-container" {
+  name                  = "sc${var.project_name}"
+  storage_account_name  = azurerm_storage_account.storage-accounts.name
+  container_access_type = "private"
+
+  depends_on = [
+    azurerm_storage_account.storage-accounts
+  ]
+}

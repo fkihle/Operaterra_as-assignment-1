@@ -57,19 +57,6 @@ resource "azurerm_network_security_group" "nsg" {
   }
 
   security_rule {
-    name                       = "sec-rule-http-mapping-${var.project_name}"
-    priority                   = 101
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "80"
-    destination_port_range     = "8080"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-    description                = "network-security-rule-http-mapping"
-  }
-
-  security_rule {
     name                       = "sec-rule-SSH-${var.project_name}"
     priority                   = 102
     direction                  = "Inbound"
@@ -77,7 +64,7 @@ resource "azurerm_network_security_group" "nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "22"
-    source_address_prefix      = "*"
+    source_address_prefix      = "*" // Todo: set this to only allow internal ssh connections?
     destination_address_prefix = "*"
     description                = "network-security-rule-ssh"
   }

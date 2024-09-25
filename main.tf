@@ -43,17 +43,17 @@ resource "azurerm_resource_group" "rg" {
 
 # Create network from module
 module "Network" {
-  source        = "./Network"
+  source = "./Network"
 
   vnet_range    = var.vnet_range
   subnet_ranges = var.subnet_ranges
 
   rg_name      = azurerm_resource_group.rg.name
-  location     = var.location
+  location     = azurerm_resource_group.rg.location
   project_name = var.project_name
-  common_tags = local.common_tags
+  common_tags  = local.common_tags
 
-  vm_names     = module.VirtualMachine.vm_names
+  vm_names = module.VirtualMachine.vm_names
 }
 
 ################
@@ -62,21 +62,20 @@ module "Network" {
 
 # Create VMs from module
 module "VirtualMachine" {
-  source   = "./VirtualMachine"
+  source = "./VirtualMachine"
 
-  vm_names      = var.vm_names
-  
-  rg_name       = azurerm_resource_group.rg.name
-  location      = var.location
-  project_name  = var.project_name
-  common_tags   = local.common_tags
+  vm_names = var.vm_names
 
-  subnet_ranges = module.Network.subnet_ranges
-  nic_ids       = module.Network.nic_ids
+  rg_name      = azurerm_resource_group.rg.name
+  location     = azurerm_resource_group.rg.location
+  project_name = var.project_name
+  common_tags  = local.common_tags
+
+  nic_ids = module.Network.nic_ids
 
   admin_user = module.KeyVault.kv_vm_username
   admin_pass = module.KeyVault.kv_vm_pass
-  depends_on = [ module.KeyVault ]
+  depends_on = [module.KeyVault]
 }
 
 ################
@@ -88,12 +87,9 @@ module "StorageAccount" {
   source = "./StorageAccount"
 
   rg_name      = azurerm_resource_group.rg.name
-  location     = var.location
+  location     = azurerm_resource_group.rg.location
   project_name = var.project_name
   common_tags  = local.common_tags
-
-  vm_names     = module.VirtualMachine.vm_names
-  subnet_ids   = module.Network.subnet_ids
 }
 
 ################
@@ -105,9 +101,8 @@ module "KeyVault" {
   source = "./KeyVault"
 
   rg_name      = azurerm_resource_group.rg.name
-  location     = var.location
+  location     = azurerm_resource_group.rg.location
   project_name = var.project_name
-  environment  = var.environment
   common_tags  = local.common_tags
 
   sa_accesskey_name  = module.StorageAccount.sa_accesskey_name

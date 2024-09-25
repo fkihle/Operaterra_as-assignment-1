@@ -70,13 +70,13 @@ resource "random_password" "kv-vm-password" {
 }
 
 resource "azurerm_key_vault_secret" "kv-vm-username" {
-  name = "vm-username"
-  value = random_string.kv-vm-username.result
+  name         = "vm-username"
+  value        = random_string.kv-vm-username.result
   key_vault_id = azurerm_key_vault.key-vault.id
 }
 
 resource "azurerm_key_vault_secret" "kv-vm-password" {
-  name = "vm-password"
-  value = random_password.kv-vm-password.result
+  name         = "vm-password"
+  value        = random_password.kv-vm-password.result
   key_vault_id = azurerm_key_vault.key-vault.id
 }

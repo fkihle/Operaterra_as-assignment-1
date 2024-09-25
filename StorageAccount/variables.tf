@@ -1,5 +1,7 @@
 # STORAGE ACCOUNT variables
 
+# Inheriting variables 
+
 variable "project_name" {
   type        = string
   description = "Project name used for all resources"
@@ -27,22 +29,9 @@ variable "costcenter" {
   type        = string
   description = "Department name used for accounting"
   default     = "IT"
-
 }
-
-# Inheriting variables
 
 variable "common_tags" {
   type        = map(string)
   description = "Common tags for the resources in this module (inherited from locals)"
-}
-
-variable "vm_names" {
-  type        = list(string)
-  description = "Virtual Machine names (inherited from VirtualMachine module)"
-}
-
-variable "subnet_ids" {
-  type        = set(string)
-  description = "Set of subnet IDs (inherited from Network module)"
 }

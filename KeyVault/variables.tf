@@ -17,12 +17,6 @@ variable "location" {
   default     = "westeurope"
 }
 
-variable "environment" {
-  type        = string
-  description = "Deployment status used for custom provisioning (inherited from StorageAccount module)"
-  default     = "dev"
-}
-
 variable "common_tags" {
   type        = map(string)
   description = "Common tags for the resources in this module (inherited from locals)"
