@@ -38,9 +38,11 @@ variable "nic_ids" {
 variable "admin_user" {
   type        = string
   description = "Randomly generated username (inherited from Key Vault)"
+  sensitive   = true
 }
 
 variable "admin_pass" {
   type        = string
   description = "Randomly generated password (inherited from Key Vault)"
+  sensitive   = true
 }

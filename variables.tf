@@ -49,6 +49,11 @@ variable "subnet_ranges" {
   default     = ["10.0.0.0/25", "10.0.0.128/25"]
 }
 
+# variable "subnet_ids" {    # TODO: Associate Key Vault to subnets
+#   type        = list(string)
+#   description = "List of subnet IDs"
+# }
+
 # VIRTUAL MACHINE variables
 variable "vm_names" {
   type        = list(string)

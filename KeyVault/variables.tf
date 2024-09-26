@@ -31,3 +31,8 @@ variable "sa_accesskey_value" {
   type        = string
   description = "Storage Account Access Key value  (inherited from StorageAccount module)"
 }
+
+# variable "subnet_ids" {   # TODO: Associate KeyVault to subnets
+#   type        = list(string)
+#   description = "List of subnet IDs"
+# }

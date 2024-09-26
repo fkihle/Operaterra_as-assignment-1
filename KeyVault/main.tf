@@ -43,6 +43,15 @@ resource "azurerm_key_vault" "key-vault" {
     ]
   }
 
+  network_acls {
+    default_action = "Deny"
+    bypass         = "AzureServices"
+
+    # virtual_network_subnet_ids = [  # TODO: Associate to subnets
+    #   for subnet_id in var.subnet_ids : subnet_id
+    # ]
+  }
+
   tags = var.common_tags
 }
 

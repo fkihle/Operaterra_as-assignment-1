@@ -47,13 +47,12 @@ module "Network" {
 
   vnet_range    = var.vnet_range
   subnet_ranges = var.subnet_ranges
+  vm_names      = var.vm_names
 
   rg_name      = azurerm_resource_group.rg.name
   location     = azurerm_resource_group.rg.location
   project_name = var.project_name
   common_tags  = local.common_tags
-
-  vm_names = module.VirtualMachine.vm_names
 }
 
 ################
@@ -104,6 +103,8 @@ module "KeyVault" {
   location     = azurerm_resource_group.rg.location
   project_name = var.project_name
   common_tags  = local.common_tags
+
+  # subnet_ids = module.Network.subnet_ids  # TODO: Associate Key Vault to subnets
 
   sa_accesskey_name  = module.StorageAccount.sa_accesskey_name
   sa_accesskey_value = module.StorageAccount.sa_accesskey_value
