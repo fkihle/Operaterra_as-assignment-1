@@ -218,11 +218,11 @@ terraform plan -out="oblig1.tfplan"
 
 Screenshot:
 
-![terraform plan](../assets/oblig1_terraform_plan_01.png)
+![terraform plan](./assets/oblig1_terraform_plan_01.png)
 
 Let's have a look at the **sensitive** values to doublecheck that they are not visible:
 
-![terraform plan](../assets/oblig1_terraform_plan_02.png)
+![terraform plan](./assets/oblig1_terraform_plan_02.png)
 
 Excellent, moving on.
 
@@ -237,11 +237,11 @@ terraform apply "oblig1.tfplan"
 
 Screenshot (in progress):
 
-![terraform apply](../assets/oblig1_terraform_apply_01.png)
+![terraform apply](./assets/oblig1_terraform_apply_01.png)
 
 Screenshot (complete):
 
-![terraform apply complete](../assets/oblig1_terraform_apply_02.png)
+![terraform apply complete](./assets/oblig1_terraform_apply_02.png)
 
 
 
@@ -251,25 +251,25 @@ Let's head over to the Azure Portal to see what we've just created. I'm not show
 
 #### Overview
 
-![resource overview](../assets/azure_portal_01_overview.png)
+![resource overview](./assets/azure_portal_01_overview.png)
 
 #### Storage Container
 *This took me a while to find, and for a while I thought that the container wasn't created.*
 
-![storage container](../assets/azure_portal_02_sa_container.png)
+![storage container](./assets/azure_portal_02_sa_container.png)
 
 #### Overview of one of the VMs
 
-![one of the VMs](../assets/azure_portal_03_vm.png)
+![one of the VMs](./assets/azure_portal_03_vm.png)
 
 #### Overview of the Subnets
 
-![subnet overview](../assets/azure_portal_04_subnets.png)
+![subnet overview](./assets/azure_portal_04_subnets.png)
 
 #### Resource visualizer
 *In the left menu in the main resource group you can find the option: Resource visualizer.*
 
-![resource visualizer](../assets/azure_portal_05_resource_overview.png)
+![resource visualizer](./assets/azure_portal_05_resource_overview.png)
 
 
 
