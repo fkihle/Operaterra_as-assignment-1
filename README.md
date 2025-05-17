@@ -1,7 +1,5 @@
 # OperaTerra AS
 
-> Frederick Kihle - Junior IT consultant
-
 ## Terraform Commands - How to set it up
 
 ### Command: terraform init
